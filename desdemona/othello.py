@@ -71,6 +71,9 @@ class Board:
         self.pieces[4,4] = -1
 
     def make_move(self, move: Move):
+        if not move:
+            return
+
         row       = extract_row(self.pieces, move.row, move.col)
         row_idx   = extract_row(piece_idx, move.row, move.col)
         col       = extract_col(self.pieces, move.row, move.col)
@@ -88,6 +91,9 @@ class Board:
         flips += get_flips(col, col_idx, move_idx, color)
         flips += get_flips(diag, diag_idx, move_idx, color)
         flips += get_flips(adiag, adiag_idx, move_idx, color)
+
+        if len(flips) == 0:
+            return #TODO handle invalid moves
 
         for i in flips:
             row = int(i / 8)
