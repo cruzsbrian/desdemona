@@ -34,11 +34,12 @@ def game_update(msg_json):
 
     # Only care about updates when it's our turn
     if (msg.turn == color):
-        print(f"Opponent played {msg.board.last_move}")
+        print(f"Opponent played {msg.last_move}")
 
         move_str = input("Enter row, col: ")
+        row, col = [int(x) for x in move_str.split(',')]
         try:
-            move = othello.Move(color, *move_str.split(','))
+            move = othello.Move(color, row, col)
         except:
             print("Invalid move")
             move = None

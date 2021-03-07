@@ -20,7 +20,6 @@ class Game:
             othello.Color.BLACK : None,
             othello.Color.WHITE : None,
         }
-        # TODO: initialize board
 
 
 # Map from connection sids to games
@@ -47,7 +46,8 @@ def update_game(game: Game, turn: othello.Color):
         messages.Status.PLAYING,
         None,
         turn,
-        game.board,
+        game.board.last_move,
+        game.board.piece_list(),
         None,
         None,
     ).to_json(), room=game.match_code)
@@ -129,8 +129,8 @@ def make_move(msg_json):
 
     print(f"Match {game.match_code}: {color.value} plays {move}")
 
-    #TODO update the board and figure out if game is over
     game.board.last_move = move
+    game.board.make_move(move)
 
     update_game(game, turn=color.opp())
 

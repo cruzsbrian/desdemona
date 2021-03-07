@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -24,7 +24,8 @@ class GameMessage(DataClassJsonMixin):
     status: Status
     error: Optional[str]
     turn: Optional[othello.Color]
-    board: Optional[othello.Board]
+    last_move: Optional[othello.Move]
+    board: Optional[List[List[int]]]
     ms_remaining: Optional[int]
     ms_remaining_opponent: Optional[int]
 
