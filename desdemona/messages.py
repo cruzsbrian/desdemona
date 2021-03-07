@@ -23,16 +23,21 @@ class GameMessage(DataClassJsonMixin):
 
     status: Status
     error: Optional[str]
-    move: Optional[othello.Move]
-    board: Optional[str]
+    turn: Optional[othello.Color]
+    board: Optional[othello.Board]
     ms_remaining: Optional[int]
     ms_remaining_opponent: Optional[int]
 
 
 @dataclass
 class RegisterMessage(DataClassJsonMixin):
+    """
+    A client -> server message sent after connect to register with a game.
+    If color is provided, the client is playing for that color. Otherwise the
+    client is a viewer.
+    """
     match_code: str
-    color: othello.Color
+    color: Optional[othello.Color]
 
 
 @dataclass

@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Optional
 
 import json
 import coolname
@@ -10,8 +10,8 @@ from desdemona import messages, othello
 
 class Game:
     match_code: str
-    board: othello.Board
-    player: Dict[othello.Color, str] = {
+    board: othello.Board = othello.Board()
+    players: dict[othello.Color, str] = {
         othello.Color.BLACK : None,
         othello.Color.WHITE : None,
     }
@@ -22,10 +22,10 @@ class Game:
 
 
 # Map from connection sids to games
-player_games: Dict[str, Game] = {}
+client_games: dict[str, Game] = {}
 
 # Map from match codes to games
-all_games: Dict[str, Game] = {}
+all_games: dict[str, Game] = {}
 
 
 # Server code
@@ -33,20 +33,20 @@ sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 
 
-def update_player(game: Game, color: othello.Color, move: othello.Move):
+def update_game(game: Game, turn: othello.Color):
     """
-    Send update of a game to a player.
+    Send update of a game to all players and viewers.
     """
-    print(f"Sending game update for {game.match_code} to {game.player[color]} ({color.value})")
+    print(f"Sending game update for {game.match_code}")
 
     sio.emit("game_update", messages.GameMessage(
         messages.Status.PLAYING,
         None,
-        move,
+        turn,
+        game.board,
         None,
         None,
-        None,
-    ).to_json(), to=game.player[color])
+    ).to_json(), room=game.match_code)
 
 
 @sio.event
@@ -74,9 +74,9 @@ def create_game(sid):
 
 
 @sio.event
-def register_player(sid, msg_json):
+def register(sid, msg_json):
     """
-    Register a client as a player in game, updating player_games and the player
+    Register a client as a player in game, updating client_games and the players
     dict in the game object.
     """
     try:
@@ -89,18 +89,23 @@ def register_player(sid, msg_json):
     except KeyError:
         return  # TODO: handle
 
-    print(f"Registering player {sid} as {msg.color.value} in match {msg.match_code}")
+    client_games[sid] = game
+    sio.enter_room(sid, game.match_code)
 
-    player_games[sid] = game
+    if msg.color:
+        print(f"Registering player {sid} as {msg.color.value} in match {msg.match_code}")
 
-    if game.player[msg.color]:
-        return #TODO handle duplicate registration
+        if game.players[msg.color]:
+            return #TODO handle duplicate registration
 
-    game.player[msg.color] = sid
+        game.players[msg.color] = sid
 
-    if game.player[othello.Color.WHITE] and game.player[othello.Color.BLACK]:
-        print("Starting game")
-        update_player(game, othello.Color.BLACK, None)
+        if game.players[othello.Color.WHITE] and game.players[othello.Color.BLACK]:
+            print(f"Starting match {game.match_code}")
+            update_game(game, turn=othello.Color.BLACK)
+    else:
+        print(f"Registering viewer {sid} in match {msg.match_code}")
+        update_game(game, turn=None)
 
 
 @sio.event
@@ -108,9 +113,9 @@ def make_move(sid, msg_json):
     """
     Receive a move from a player, update the game, and update the other player.
     """
-    game = player_games[sid]
+    game = client_games[sid]
 
-    if sid == game.player[othello.Color.BLACK]:
+    if sid == game.players[othello.Color.BLACK]:
         color = othello.Color.BLACK
     else:
         color = othello.Color.WHITE
@@ -121,8 +126,9 @@ def make_move(sid, msg_json):
     print(f"Match {game.match_code}: {color.value} plays {move}")
 
     #TODO update the board and figure out if game is over
+    game.board.last_move = move
 
-    update_player(game, color.opp(), move)
+    update_game(game, turn=color.opp())
 
 
 def run():

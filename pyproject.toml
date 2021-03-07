@@ -20,6 +20,7 @@ rope = "^0.18.0"
 [tool.poetry.scripts]
 server = 'desdemona.server:run'
 player = 'desdemona.player:run'
+viewer = 'desdemona.viewer:run'
 create_game = 'desdemona.create_game:run'
 
 [build-system]

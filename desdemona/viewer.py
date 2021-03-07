@@ -6,7 +6,6 @@ sio = socketio.Client()
 
 
 match_code = None
-color = None
 
 
 @sio.event
@@ -17,7 +16,7 @@ def connect():
     print(f"SID: {sio.get_sid()}")
     sio.emit(
         "register",
-        messages.RegisterMessage(match_code, color).to_json(),
+        messages.RegisterMessage(match_code, None).to_json(),
     )
 
 
@@ -32,31 +31,18 @@ def game_update(msg_json):
     except:
         return
 
-    # Only care about updates when it's our turn
-    if (msg.turn == color):
-        print(f"Opponent played {msg.board.last_move}")
-
-        move_str = input("Enter row, col: ")
-        try:
-            move = othello.Move(color, *move_str.split(','))
-        except:
-            print("Invalid move")
-            move = None
-
-        sio.emit("make_move", messages.MoveMessage(move).to_json())
+    print(msg.board.last_move)
 
 
 def run():
     parser = argparse.ArgumentParser()
     parser.add_argument('match_code', metavar='match_code', type=str)
-    parser.add_argument('color', metavar='color', type=othello.Color)
     args = parser.parse_args()
 
-    global match_code, color
+    global match_code
     match_code = args.match_code
-    color = args.color
 
-    print(f"Registering for match {match_code} as {color.value}")
+    print(f"Registering for match {match_code}")
 
     sio.connect("http://localhost:8765")
     sio.wait()

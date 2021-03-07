@@ -1,11 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-
-
-@dataclass
-class Move:
-    row: int
-    col: int
+from typing import Optional
 
 
 class Color(Enum):
@@ -16,5 +11,14 @@ class Color(Enum):
         return Color.WHITE if self == Color.BLACK else Color.BLACK
 
 
+@dataclass
+class Move:
+    color: Color
+    row: int
+    col: int
+
+
+@dataclass
 class Board:
+    last_move: Optional[Move] = None
     pass  # TODO
