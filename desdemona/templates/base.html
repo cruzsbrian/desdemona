@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>{% block titlebar %}{% endblock %}</title>
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+        <script src="https://cdn.socket.io/3.1.1/socket.io.min.js" integrity="sha384-gDaozqUvc4HTgo8iZjwth73C6dDDeOJsAgpxBcMpZYztUfjHXpzrpdrHRdVp8ySO" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="page-container">
+            <header id="header">
+                {% block header %} {% endblock %}
+            </header>
+
+            <div id="content-wrap">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </body>
+</html>

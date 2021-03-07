@@ -6,7 +6,6 @@ from flask import Flask, request, render_template
 from flask_socketio import SocketIO, emit, join_room
 
 from desdemona import messages, othello
-from webserver import webserver
 
 
 class Game:

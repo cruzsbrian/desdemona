@@ -1,0 +1,39 @@
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background: #fff;
+    margin: 0;
+    font-size: 12pt;
+}
+
+
+#page-container {
+    position: relative;
+    max-width: 8in;
+    margin: 0 auto;
+}
+
+
+#content-wrap {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+
+#header {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.board {
+    margin: auto;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    background: #00dd00;
+}

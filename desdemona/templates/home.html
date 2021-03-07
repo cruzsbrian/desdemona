@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block titlebar %}
+Generate Match Code
+{% endblock %}
+
+{% block header %}
+<h1>Desdemona</h1>
+{% endblock %}
+
+{% block content %}
+
+<script>
+    function getMatchCode() {
+        const socket = io();
+    }
+</script>
+
+<button onclick=getMatchCode()> Generate new match code </button>
+
+<p id="matchcode"> </p>
+
+{% endblock %}

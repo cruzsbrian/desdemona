@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block titlebar %}
+Generate Match Code
+{% endblock %}
+
+{% block header %}
+<h1>Desdemona</h1>
+{% endblock %}
+
+{% block content %}
+
+<p> Viewing match: <span id="matchcode"> {{ match_code }}</span> </p>
+
+<table class="board">
+    {% for row in range(8) %}
+        <tr class="row" id="row{{row}}">
+            {% for col in range(8) %}
+                <td class="cell" id="cell{{row}},{{col}}">
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
