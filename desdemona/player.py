@@ -58,5 +58,5 @@ def run():
 
     print(f"Registering for match {match_code} as {color.value}")
 
-    sio.connect("http://localhost:8765")
+    sio.connect("http://localhost:5000")
     sio.wait()

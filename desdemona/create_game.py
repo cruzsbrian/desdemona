@@ -15,5 +15,5 @@ def get_game_code(match_code_msg):
     sio.disconnect()
 
 def run():
-    sio.connect("http://localhost:8765")
+    sio.connect("http://localhost:5000")
     sio.wait()

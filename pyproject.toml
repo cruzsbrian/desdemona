@@ -11,6 +11,8 @@ coolname = "^1.1.0"
 eventlet = "^0.30.2"
 python-socketio = {extras = ["client"], version = "^5.0.4"}
 dataclasses-json = "^0.5.2"
+Flask = "^1.1.2"
+Flask-SocketIO = "^5.0.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.8.4"
@@ -22,6 +24,7 @@ server = 'desdemona.server:run'
 player = 'desdemona.player:run'
 viewer = 'desdemona.viewer:run'
 create_game = 'desdemona.create_game:run'
+webserver = 'webserver.__main__:run'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
