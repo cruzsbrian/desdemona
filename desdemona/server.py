@@ -8,6 +8,10 @@ from flask_socketio import SocketIO, emit, join_room
 from desdemona import messages, othello
 
 
+HOST = "localhost"
+PORT = 5000
+
+
 class Game:
     match_code: str
     board: othello.Board
@@ -143,6 +147,5 @@ def view(match_code):
 
 
 def run():
-    # eventlet.spawn(eventlet.wsgi.server, eventlet.listen(("localhost", 8765)), app)
-    # eventlet.wsgi.server(eventlet.listen(("localhost", 8765)), webserver.app)
-    socketio.run(app, host="localhost")
+    print(f"Hosting on http://{HOST}:{PORT}")
+    socketio.run(app, host=HOST, port=PORT)
