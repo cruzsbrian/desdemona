@@ -11,6 +11,9 @@ color = None
 
 @sio.event
 def connect():
+    """
+    Connection established with server; register this player in its game.
+    """
     print(f"SID: {sio.get_sid()}")
     sio.emit(
         "register_player",
@@ -20,6 +23,10 @@ def connect():
 
 @sio.event
 def game_update(msg_json):
+    """
+    Read the game update from the server, get the next move through stdin, then
+    send it to the server.
+    """
     try:
         msg = messages.GameMessage.from_json(msg_json)
     except:
