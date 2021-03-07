@@ -11,16 +11,63 @@ Generate Match Code
 {% block content %}
 
 <p> Viewing match: <span id="matchcode"> {{ match_code }}</span> </p>
+<p id="last_move">&nbsp;</p>
+<p id="turn">&nbsp;</p>
 
 <table class="board">
     {% for row in range(8) %}
         <tr class="row" id="row{{row}}">
             {% for col in range(8) %}
-                <td class="cell" id="cell{{row}},{{col}}">
+                <td class="cell" id="cell{{row}}{{col}}">
+                    <div class="piece" id="p{{row}}{{col}}"></div>
                 </td>
             {% endfor %}
         </tr>
     {% endfor %}
 </table>
+
+<script>
+    function setPiece(row, col, color) {
+        var piece = document.getElementById("p" + row + col);
+        piece.style.backgroundColor = color;
+    }
+
+    const socket = io();
+
+    socket.on("game_update", (msg_json) => {
+        msg = JSON.parse(msg_json);
+        console.log(msg);
+
+        for (var row = 0; row < 8; row++) {
+            for (var col = 0; col < 8; col++) {
+                val = msg.board[row][col];
+                if (val === -1) { setPiece(row, col, "#fff"); }
+                else if (val === 1) { setPiece(row, col, "#000"); }
+                else { setPiece(row, col, "#0000"); }
+            }
+        }
+
+        var last_move_str = "&nbsp;";
+        if (msg.last_move !== null) {
+            last_move_str = msg.last_move.color + " played (" + msg.last_move.row +
+                            "," + msg.last_move.col + ")";
+        }
+        document.getElementById("last_move").innerHTML = last_move_str;
+
+        var turn_str = "&nbsp;";
+        if (msg.turn !== null) {
+            turn_str = msg.turn + "'s turn";
+            if (msg.ms_remaining !== null) {
+                turn_str += " (" + msg.ms_remaining / 1000 + "s left)";
+            }
+        }
+        document.getElementById("turn").innerHTML = turn_str;
+    });
+
+    const match_code = document.getElementById("matchcode").innerText;
+    socket.emit("register", JSON.stringify(
+        { match_code: match_code, color: null }
+    ));
+</script>
 
 {% endblock %}

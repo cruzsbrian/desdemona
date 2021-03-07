@@ -10,8 +10,7 @@ Generate Match Code
 
 {% block content %}
 
-<form method=post>
-<button type=submit> Generate new match code </button>
-</form>
+<p> Match code: {{match_code}} </p>
+<p> <a href="view/{{match_code}}">Viewing link</a> </p>
 
 {% endblock %}

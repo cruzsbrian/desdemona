@@ -30,11 +30,21 @@ all_games: dict[str, Game] = {}
 
 
 # Server code
-# sio = socketio.Server()
-# app = socketio.WSGIApp(sio)
 app = Flask(__name__)
 socketio = SocketIO(app)
 
+
+def create_game():
+    """
+    Create a new game, and return the corresponding match code to the requester.
+    """
+    # NOTE: this may yield a name collision after ~300K games without server restart
+    game_code = coolname.generate_slug(2)
+
+    game = Game(game_code)
+    all_games[game_code] = game
+
+    return game_code
 
 def update_game(game: Game, turn: othello.Color):
     """
@@ -61,21 +71,6 @@ def connect():
 @socketio.on("disconnect")
 def disconnect():
     print("SERVER: disconnected from", request.sid)
-
-
-@socketio.on("create_game")
-def create_game():
-    """
-    Create a new game, and return the corresponding match code to the requester.
-    """
-    # NOTE: this may yield a name collision after ~300K games without server restart
-    game_code = coolname.generate_slug(2)
-
-    game = Game(game_code)
-    all_games[game_code] = game
-    print(all_games)
-
-    emit("get_game_code", game_code, to=request.sid)
 
 
 @socketio.on("register")
@@ -135,9 +130,12 @@ def make_move(msg_json):
     update_game(game, turn=color.opp())
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template('home.html')
+    if request.method == "GET":
+        return render_template('home.html')
+    if request.method == "POST":
+        return render_template('newgame.html', match_code=create_game())
 
 @app.route("/view/<match_code>")
 def view(match_code):
@@ -148,6 +146,3 @@ def run():
     # eventlet.spawn(eventlet.wsgi.server, eventlet.listen(("localhost", 8765)), app)
     # eventlet.wsgi.server(eventlet.listen(("localhost", 8765)), webserver.app)
     socketio.run(app, host="localhost")
-
-if __name__ == "__main__":
-    run()
