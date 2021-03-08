@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "desdemona"
 version = "0.1.0"
-description = ""
-authors = ["Aidan Swope <aidanswope@gmail.com>"]
+description = "A server for othello AI games"
+authors = ["Brian Cruz <cruz.s.brian@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
