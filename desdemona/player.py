@@ -1,6 +1,6 @@
 import socketio
 import argparse
-from desdemona import messages, othello
+from desdemona import messages, othello, games
 
 sio = socketio.Client()
 
@@ -33,7 +33,7 @@ def game_update(msg_json):
         return
 
     # Only care about updates when it's our turn
-    if (msg.turn == color):
+    if (msg.status == games.Status.PLAYING):
         print(f"Opponent played {msg.last_move}")
 
         move_str = input("Enter row, col: ")
@@ -45,6 +45,11 @@ def game_update(msg_json):
             move = None
 
         sio.emit("make_move", messages.MoveMessage(move).to_json())
+
+    else:
+        print(f"Game over: {msg.status.value}")
+        if msg.status == games.Status.ERROR:
+            print(msg.error)
 
 
 def run():

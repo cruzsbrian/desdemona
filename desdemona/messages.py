@@ -1,18 +1,9 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional, List
 
 from dataclasses_json import DataClassJsonMixin
 
-from desdemona import othello
-
-
-class Status(Enum):
-    PLAYING = "playing"
-    ERROR = "error"
-    WHITE_WINS = "white_wins"
-    BLACK_WINS = "black_wins"
-    DRAW = "draw"
+from desdemona import othello, games
 
 
 @dataclass
@@ -21,7 +12,7 @@ class GameMessage(DataClassJsonMixin):
     A server -> client message indicating game status.
     """
 
-    status: Status
+    status: games.Status
     error: Optional[str]
     turn: Optional[othello.Color]
     last_move: Optional[othello.Move]

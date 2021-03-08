@@ -59,21 +59,16 @@ def get_flips(pieces, piece_idx, move_idx, color):
 
 @dataclass
 class Board:
-    last_move: Optional[Move]
     pieces: np.ndarray
 
     def __init__(self):
-        self.last_move = None
         self.pieces = np.zeros((8,8))
         self.pieces[3,3] = -1
         self.pieces[3,4] =  1
         self.pieces[4,3] =  1
         self.pieces[4,4] = -1
 
-    def make_move(self, move: Move):
-        if not move:
-            return
-
+    def get_flips(self, move: Move):
         row       = extract_row(self.pieces, move.row, move.col)
         row_idx   = extract_row(piece_idx, move.row, move.col)
         col       = extract_col(self.pieces, move.row, move.col)
@@ -92,15 +87,44 @@ class Board:
         flips += get_flips(diag, diag_idx, move_idx, color)
         flips += get_flips(adiag, adiag_idx, move_idx, color)
 
+        return flips
+
+    def make_move(self, move: Move):
+        if not move:
+            if len(self.get_moves(move.color)) != 0:
+                raise InvalidMove()
+            return
+
+        flips = self.get_flips(move)
+
         if len(flips) == 0:
-            return #TODO handle invalid moves
+            raise InvalidMove()
 
         for i in flips:
             row = int(i / 8)
             col = i % 8
             self.pieces[row,col] *= -1
 
-        self.pieces[move.row,move.col] = color
+        self.pieces[move.row,move.col] = 1 if move.color == Color.BLACK else -1
+
+    def get_moves(self, color: Color):
+        moves = []
+
+        for row in range(8):
+            for col in range(8):
+                m = Move(color, row, col)
+
+                if len(self.get_flips(m)) != 0:
+                    moves.append(m)
+
+        return moves
 
     def piece_list(self):
         return self.pieces.tolist()
+
+
+class InvalidMove(ValueError):
+    """
+    Exception thrown by the board when an invalid move is played.
+    """
+    pass
