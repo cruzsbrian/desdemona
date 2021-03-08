@@ -43,8 +43,11 @@ def get_flips(pieces, piece_idx, move_idx, color):
     for i in range(len(pieces)):
         if piece_idx[i] < move_idx:
             if pieces[i] == color:
-                flips_before = []
+                flips = []
                 can_flip_before = True
+            if pieces[i] == 0:
+                flips = []
+                can_flip_before = False
             if pieces[i] == color * -1 and can_flip_before:
                 flips.append(piece_idx[i])
 
@@ -117,7 +120,7 @@ class Board:
             for col in range(8):
                 m = Move(color, row, col)
 
-                if len(self.get_flips(m)) != 0:
+                if self.pieces[m.row,m.col] == 0 and len(self.get_flips(m)) != 0:
                     moves.append(m)
 
         return moves
