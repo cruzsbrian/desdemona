@@ -20,8 +20,8 @@ black = {version = "^20.8b1", allow-prereleases = true}
 rope = "^0.18.0"
 
 [tool.poetry.scripts]
-server = 'desdemona.server:run'
-player = 'desdemona.player:run'
+desdemona-server = 'desdemona.server:run'
+desdemona-player = 'desdemona.player:run'
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

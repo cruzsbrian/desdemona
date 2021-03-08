@@ -12,13 +12,11 @@ body {
     margin: 0 auto;
 }
 
-
 #content-wrap {
     width: 100%;
     margin: auto;
     text-align: center;
 }
-
 
 #header {
     width: 100%;
@@ -26,6 +24,11 @@ body {
     margin: 0;
     box-sizing: border-box;
     text-align: center;
+}
+
+#header a {
+    text-decoration: none;
+    color: inherit;
 }
 
 

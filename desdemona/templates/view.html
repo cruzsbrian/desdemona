@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
 
 {% block titlebar %}
-Generate Match Code
-{% endblock %}
-
-{% block header %}
-<h1>Desdemona</h1>
+View Match
 {% endblock %}
 
 {% block content %}
 
-<p> Viewing match: <span id="matchcode"> {{ match_code }}</span> </p>
+<p> Match code: <span id="matchcode"> {{ match_code }}</span> </p>
 <p id="last_move">&nbsp;</p>
 <p id="status">&nbsp;</p>
 

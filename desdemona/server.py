@@ -2,7 +2,7 @@ from typing import Optional
 
 import json
 import coolname
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect
 from flask_socketio import SocketIO, emit, join_room
 
 from desdemona import messages, othello, games
@@ -29,7 +29,7 @@ def create_game():
     Create a new game, and return the corresponding match code to the requester.
     """
     # NOTE: this may yield a name collision after ~300K games without server restart
-    game_code = coolname.generate_slug(2)
+    game_code = ''.join(x.capitalize() for x in coolname.generate(2))
 
     game = games.Game(game_code)
     all_games[game_code] = game
@@ -143,7 +143,8 @@ def home():
     if request.method == "GET":
         return render_template('home.html')
     if request.method == "POST":
-        return render_template('newgame.html', match_code=create_game())
+        match_code = create_game()
+        return redirect(f"/view/{match_code}")
 
 @app.route("/view/<match_code>")
 def view(match_code):
