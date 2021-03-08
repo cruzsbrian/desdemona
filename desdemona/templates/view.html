@@ -62,6 +62,9 @@ Generate Match Code
             }
         } else {
             status_str = msg.status;
+            if (msg.score !== null) {
+                status_str += " (" + msg.score[0] + "-" + msg.score[1] + ")";
+            }
             if (msg.status === "error") {
                 status_str += ": " + msg.error;
             }

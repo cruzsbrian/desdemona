@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional, List, Tuple
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -14,6 +14,7 @@ class GameMessage(DataClassJsonMixin):
 
     status: games.Status
     error: Optional[str]
+    score: Optional[Tuple[int]]
     turn: Optional[othello.Color]
     last_move: Optional[othello.Move]
     board: Optional[List[List[int]]]

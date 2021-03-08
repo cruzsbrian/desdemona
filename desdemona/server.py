@@ -52,6 +52,7 @@ def send_update(game: games.Game, to: Optional[str] = None):
     msg_json = messages.GameMessage(
         game.status,
         game.error,
+        game.score,
         game.turn,
         last_move,
         game.board.piece_list(),

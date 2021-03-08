@@ -51,6 +51,8 @@ def game_update(msg_json):
         if msg.status == games.Status.ERROR:
             print(msg.error)
 
+        sio.disconnect()
+
 
 def run():
     parser = argparse.ArgumentParser()

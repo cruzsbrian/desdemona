@@ -38,6 +38,7 @@ def get_flips(pieces, piece_idx, move_idx, color):
     flips = []
     opp_after = []
     can_flip_before = False
+    can_flip_after = True
 
     for i in range(len(pieces)):
         if piece_idx[i] < move_idx:
@@ -51,8 +52,10 @@ def get_flips(pieces, piece_idx, move_idx, color):
             if pieces[i] == color:
                 flips += opp_after
                 break
-            if pieces[i] == color * -1:
+            if pieces[i] == color * -1 and can_flip_after:
                 opp_after.append(piece_idx[i])
+            if pieces[i] == 0:
+                can_flip_after = False
 
     return flips
 
@@ -118,6 +121,15 @@ class Board:
                     moves.append(m)
 
         return moves
+
+    def count_pieces(self, color: Color):
+        n = 0
+
+        for p in self.pieces.flatten():
+            if (p == 1 and color == Color.BLACK) or (p == -1 and color == Color.WHITE):
+                n += 1
+
+        return n
 
     def piece_list(self):
         return self.pieces.tolist()
