@@ -12,7 +12,7 @@ Generate Match Code
 
 <p> Viewing match: <span id="matchcode"> {{ match_code }}</span> </p>
 <p id="last_move">&nbsp;</p>
-<p id="turn">&nbsp;</p>
+<p id="status">&nbsp;</p>
 
 <table class="board">
     {% for row in range(8) %}
@@ -54,14 +54,19 @@ Generate Match Code
         }
         document.getElementById("last_move").innerHTML = last_move_str;
 
-        var turn_str = "&nbsp;";
-        if (msg.turn !== null) {
-            turn_str = msg.turn + "'s turn";
+        var status_str = "&nbsp;";
+        if (msg.status === "playing") {
+            status_str = msg.turn + "'s turn";
             if (msg.ms_remaining !== null) {
-                turn_str += " (" + msg.ms_remaining / 1000 + "s left)";
+                status_str += " (" + msg.ms_remaining / 1000 + "s left)";
+            }
+        } else {
+            status_str = msg.status;
+            if (msg.status === "error") {
+                status_str += ": " + msg.error;
             }
         }
-        document.getElementById("turn").innerHTML = turn_str;
+        document.getElementById("status").innerHTML = status_str;
     });
 
     const match_code = document.getElementById("matchcode").innerText;
