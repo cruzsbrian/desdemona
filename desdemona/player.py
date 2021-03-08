@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 import socketio
 import argparse
@@ -88,12 +89,13 @@ def run():
     print(f"Starting {args.bot}")
 
     global botProcess
-    botProcess = subprocess.Popen([args.bot, color.value],
+    botProcess = subprocess.Popen([os.path.join(os.getcwd(), args.bot), color.value],
                                   stdout=subprocess.PIPE,
                                   stdin=subprocess.PIPE,
                                   stderr=None,
                                   text=True)
-    print(botProcess.stdout.readline())
+
+    print(botProcess.stdout.readline()) # we expect the bot to signal ready
 
     print(f"Registering for match {match_code} as {color.value}")
 
