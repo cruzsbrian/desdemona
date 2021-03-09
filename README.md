@@ -4,7 +4,7 @@ and a player script which allows a text stream-based othello bot to communicate 
 
 
 ## Usage
-Running `desdemona-server` starts the server and prints a url.
+The server is currently being hosted on [reversebreakdown.com](http://reversebreakdown.com).
 
 After creating a match through the web interface, you are redirected to the viewing page for the match.
 Anyone who accesses the viewing page (by url) becomes an observer for the match.
@@ -25,3 +25,7 @@ Then `desdemona-player` will prompt the bot for each move with the message: `[ro
 - `ms_remaining` gives the time left in the game for the bot in milliseconds as an integer (not yet implemented).
 
 The bot should respond with `[row] [col]` or `pass` specifying it's move, also ending in newline.
+
+## Running a local server
+Running `desdemona-server` starts the server and prints a url.
+If `desdamona-player` sees a local server, it will automatically connect to it before trying the default server.
