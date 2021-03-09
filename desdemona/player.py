@@ -99,7 +99,12 @@ def run():
 
     print(f"Registering for match {match_code} as {color.value}")
 
-    sio.connect("http://localhost:5000")
+    # First see if a local server is running, then try the hosted server
+    try:
+        sio.connect("http://localhost:5000")
+    except:
+        sio.connect("http://reversebreakdown.com")
+
     sio.wait()
 
     botProcess.kill()
