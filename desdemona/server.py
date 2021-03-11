@@ -103,6 +103,7 @@ def register(msg_json):
         game.players[msg.color] = request.sid
 
         if game.players[othello.Color.WHITE] and game.players[othello.Color.BLACK]:
+            game.status = games.Status.PLAYING
             print(f"Starting match {game.match_code}")
             send_update(game, to=game.players[game.turn])
     else:

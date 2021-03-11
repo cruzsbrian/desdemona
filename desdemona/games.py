@@ -5,6 +5,7 @@ from desdemona import othello
 
 
 class Status(Enum):
+    WAITING = "waiting"
     PLAYING = "playing"
     ERROR = "error"
     WHITE_WINS = "white wins"
@@ -28,7 +29,7 @@ class Game:
     def __init__(self, match_code):
         self.match_code = match_code
 
-        self.status = Status.PLAYING
+        self.status = Status.WAITING
         self.error = None
         self.score = None
 
