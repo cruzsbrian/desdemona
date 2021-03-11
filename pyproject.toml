@@ -5,8 +5,8 @@ description = "A server for othello AI games"
 authors = ["Brian Cruz <cruz.s.brian@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
-numpy = "^1.20.1"
+python = "^3.6"
+numpy = "^1.19.1"
 coolname = "^1.1.0"
 python-socketio = {extras = ["client"], version = "^5.0.4"}
 dataclasses-json = "^0.5.2"

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, Dict
 
 from desdemona import othello
 
@@ -21,10 +21,10 @@ class Game:
     score: Optional[Tuple[int]]
 
     board: othello.Board
-    move_history: list[othello.Move]
+    move_history: List[othello.Move]
     turn: othello.Color
 
-    players: dict[othello.Color, str]
+    players: Dict[othello.Color, str]
 
     def __init__(self, match_code):
         self.match_code = match_code

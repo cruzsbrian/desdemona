@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict
 
 import json
 import coolname
@@ -13,10 +13,10 @@ PORT = 5000
 
 
 # Map from connection sids to games
-player_games: dict[str, games.Game] = {}
+player_games: Dict[str, games.Game] = {}
 
 # Map from match codes to games
-all_games: dict[str, games.Game] = {}
+all_games: Dict[str, games.Game] = {}
 
 
 # Server code
