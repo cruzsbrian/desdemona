@@ -58,7 +58,7 @@ def get_flips(pieces, piece_idx, move_idx, color):
             if pieces[i] == color * -1 and can_flip_after:
                 opp_after.append(piece_idx[i])
             if pieces[i] == 0:
-                can_flip_after = False
+                break
 
     return flips
 
