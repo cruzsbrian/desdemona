@@ -42,6 +42,8 @@ class Game:
         }
 
     def update(self, move: othello.Move):
+        self.status = Status.PLAYING # needed if coming from an error state
+
         try:
             self.board.make_move(move)
             self.move_history.append(move)

@@ -131,7 +131,7 @@ def make_move(msg_json):
 
     game.update(move)
 
-    if game.status == games.Status.PLAYING:
+    if game.status == games.Status.PLAYING or game.status == games.Status.ERROR:
         send_update(game, to=game.players[game.turn])
     else:
         # game is over, send message to all clients
