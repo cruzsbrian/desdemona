@@ -15,12 +15,20 @@ View Match
         <tr class="row" id="row{{row}}">
             {% for col in range(8) %}
                 <td class="cell" id="cell{{row}}{{col}}">
-                    <div class="piece" id="p{{row}}{{col}}"></div>
+                    <button class="piece" id="p{{row}}{{col}}" onclick="send_move({{row}},{{col}})"></button>
                 </td>
             {% endfor %}
         </tr>
     {% endfor %}
 </table>
+
+<br>
+<div>
+    <p id="playing-as"></p>
+    <button id="join-black" onclick="join('black')">Join as black</button>
+    <button id="join-white" onclick="join('white')">Join as white</button>
+    <button id="pass" onclick="send_move(-1, -1)" style="display: none">Pass</button>
+</div>
 
 <script>
     function setPiece(row, col, color) {
@@ -30,10 +38,15 @@ View Match
 
     const socket = io();
 
+    const match_code = document.getElementById("matchcode").innerText;
+    var my_color = null;
+    var turn = null;
+
     socket.on("game_update", (msg_json) => {
         msg = JSON.parse(msg_json);
         console.log(msg);
 
+        // Update the board
         for (var row = 0; row < 8; row++) {
             for (var col = 0; col < 8; col++) {
                 val = msg.board[row][col];
@@ -43,6 +56,7 @@ View Match
             }
         }
 
+        // Update the last_move label
         var last_move_str = "&nbsp;";
         if (msg.last_move !== null) {
             last_move_str = msg.last_move.color + " played (" + msg.last_move.row +
@@ -50,9 +64,11 @@ View Match
         }
         document.getElementById("last_move").innerHTML = last_move_str;
 
+        // Update the status label
         var status_str = "&nbsp;";
         if (msg.status === "playing") {
-            status_str = msg.turn + "'s turn";
+            turn = msg.turn;
+            status_str = turn + "'s turn";
             if (msg.ms_remaining !== null) {
                 status_str += " (" + msg.ms_remaining / 1000 + "s left)";
             }
@@ -66,9 +82,41 @@ View Match
             }
         }
         document.getElementById("status").innerHTML = status_str;
+
+        // If a player joined, update the join buttons
+        if (msg.black_sid) { document.getElementById("join-black").style.display = "none"; }
+        if (msg.white_sid) { document.getElementById("join-white").style.display = "none"; }
     });
 
-    const match_code = document.getElementById("matchcode").innerText;
+    function join(color) {
+        my_color = color;
+        socket.emit("register", JSON.stringify(
+            { match_code: match_code, color: my_color }
+        ));
+
+        // Hide both join buttons
+        document.getElementById("join-black").style.display = "none";
+        document.getElementById("join-white").style.display = "none";
+
+        document.getElementById("playing-as").innerText = "Playing as " + my_color;
+        document.getElementById("pass").style.display = "inline-block";
+    }
+
+    function send_move(row, col) {
+        if (turn == my_color) {
+            var move = null;
+            if (row !== -1 && col !== -1) {
+                move = { color: my_color, row: row, col: col };
+            }
+
+            socket.emit("make_move", JSON.stringify(
+                { move: move }
+            ));
+        } else if (my_color !== null) {
+            alert("Wait until " + my_color + "'s turn to move.");
+        }
+    }
+
     socket.emit("register", JSON.stringify(
         { match_code: match_code, color: null }
     ));

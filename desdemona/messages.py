@@ -20,6 +20,8 @@ class GameMessage(DataClassJsonMixin):
     board: Optional[List[List[int]]]
     ms_remaining: Optional[int]
     ms_remaining_opponent: Optional[int]
+    black_sid: Optional[str]
+    white_sid: Optional[str]
 
 
 @dataclass

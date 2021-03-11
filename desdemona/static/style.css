@@ -48,4 +48,16 @@ body {
     background: #0000;
     margin: auto;
     border-radius: 50%;
+    border: none;
+    display: block;
 }
+
+.piece:focus {
+    outline: none;
+}
+
+/* Initial board state */
+#p33 { background: #fff; }
+#p34 { background: #000; }
+#p43 { background: #000; }
+#p44 { background: #fff; }

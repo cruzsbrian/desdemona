@@ -58,6 +58,8 @@ def send_update(game: games.Game, to: Optional[str] = None):
         game.board.piece_list(),
         None,
         None,
+        game.players[othello.Color.BLACK],
+        game.players[othello.Color.WHITE],
     ).to_json()
 
     emit("game_update", msg_json, to=game.match_code)
@@ -94,7 +96,7 @@ def register(msg_json):
 
     if msg.color:
         if game.players[msg.color]:
-            return #TODO handle duplicate registration
+            pass #TODO handle duplicate registration
 
         print(f"Registering player {request.sid} as {msg.color.value} in match {msg.match_code}")
         player_games[request.sid] = game
@@ -106,7 +108,8 @@ def register(msg_json):
     else:
         print(f"Registering viewer {request.sid} in match {msg.match_code}")
         join_room(game.match_code) # add viewer to the room for the game
-        send_update(game, to=request.sid) # send game to the viewer
+
+    send_update(game) # send game to viewers
 
 
 @socketio.on("make_move")
