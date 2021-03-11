@@ -2,6 +2,8 @@
 Desdemona provides a server which generates matches, coordinates players, and allows viewing the game in real time,
 and a player script which allows a text stream-based othello bot to communicate with the server.
 
+## Installation
+`pip install desdamona`
 
 ## Usage
 The server is currently being hosted on [reversebreakdown.com](http://reversebreakdown.com).
