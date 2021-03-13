@@ -122,15 +122,17 @@ def make_move(msg_json):
 
     if request.sid == game.players[othello.Color.BLACK]:
         color = othello.Color.BLACK
-    else:
+    elif request.sid == game.players[othello.Color.WHITE]:
         color = othello.Color.WHITE
+    else:
+        pass #TODO we got a move from someone not playing
 
     msg = messages.MoveMessage.from_json(msg_json)
     move = msg.move
 
     print(f"Match {game.match_code}: {color.value} plays {move}")
 
-    game.update(move)
+    game.update(color, move)
 
     if game.status == games.Status.PLAYING or game.status == games.Status.ERROR:
         send_update(game, to=game.players[game.turn])

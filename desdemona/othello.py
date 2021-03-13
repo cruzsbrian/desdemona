@@ -95,9 +95,9 @@ class Board:
 
         return flips
 
-    def make_move(self, move: Move):
+    def make_move(self, color: Color, move: Move):
         if not move:
-            if len(self.get_moves(move.color)) != 0:
+            if len(self.get_moves(color)) != 0:
                 raise InvalidMove()
             return
 

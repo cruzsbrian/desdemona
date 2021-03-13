@@ -42,13 +42,13 @@ class Game:
             othello.Color.WHITE : None,
         }
 
-    def update(self, move: othello.Move):
+    def update(self, color: othello.Color, move: othello.Move):
         self.status = Status.PLAYING # needed if coming from an error state
 
         try:
-            self.board.make_move(move)
+            self.board.make_move(color, move)
             self.move_history.append(move)
-            self.turn = move.color.opp()
+            self.turn = color.opp()
 
             # Handle game over
             if (len(self.board.get_moves(othello.Color.BLACK)) == 0 and
@@ -67,4 +67,4 @@ class Game:
 
         except othello.InvalidMove:
             self.status = Status.ERROR
-            self.error = f"Invalid move by {move.color.value}"
+            self.error = f"Invalid move by {color.value}"
