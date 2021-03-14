@@ -25,8 +25,11 @@ class Game:
     turn: othello.Color
 
     players: Dict[othello.Color, str]
+    time_left: Dict[othello.Color, float]
+    start_time: Dict[othello.Color, float]
 
-    def __init__(self, match_code):
+
+    def __init__(self, match_code, time_black=None, time_white=None):
         self.match_code = match_code
 
         self.status = Status.WAITING
@@ -41,6 +44,17 @@ class Game:
             othello.Color.BLACK : None,
             othello.Color.WHITE : None,
         }
+
+        self.time_left = {
+            othello.Color.BLACK : time_black,
+            othello.Color.WHITE : time_white,
+        }
+
+        self.start_time = {
+            othello.Color.BLACK : 0,
+            othello.Color.WHITE : 0,
+        }
+
 
     def update(self, color: othello.Color, move: othello.Move):
         self.status = Status.PLAYING # needed if coming from an error state

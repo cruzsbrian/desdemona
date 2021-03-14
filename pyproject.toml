@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "desdemona"
-version = "0.1.0"
+version = "0.1.3"
 description = "A server for othello AI games"
 authors = ["Brian Cruz <cruz.s.brian@gmail.com>"]
 

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Dict
 
 from dataclasses_json import DataClassJsonMixin
 
@@ -18,8 +18,7 @@ class GameMessage(DataClassJsonMixin):
     turn: Optional[othello.Color]
     last_move: Optional[othello.Move]
     board: Optional[List[List[int]]]
-    ms_remaining: Optional[int]
-    ms_remaining_opponent: Optional[int]
+    ms_remaining: Optional[Dict[str, int]]
     black_sid: Optional[str]
     white_sid: Optional[str]
 

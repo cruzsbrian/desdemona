@@ -69,8 +69,15 @@ View Match
         if (msg.status === "playing") {
             turn = msg.turn;
             status_str = turn + "'s turn";
-            if (msg.ms_remaining !== null) {
-                status_str += " (" + msg.ms_remaining / 1000 + "s left)";
+
+            if (msg.ms_remaining[turn] !== null) {
+                const time_left = msg.ms_remaining[turn];
+
+                if (time_left >= 10) {
+                    status_str += " (" + Math.round(msg.ms_remaining[turn]) + "s left)";
+                } else {
+                    status_str += " (" + msg.ms_remaining[turn].toFixed(3) + "s left)";
+                }
             }
         } else {
             status_str = msg.status;
