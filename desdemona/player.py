@@ -99,18 +99,20 @@ def run():
 
     args = parser.parse_args()
 
-    global match_code, color
+    global match_code, color, use_cs2
     match_code = args.match_code
     color = args.color
     use_cs2 = args.cs2
 
     print(f"Starting {args.bot}")
 
+    arg_color = color.value
     if use_cs2:
         print("Using the CS2 protocol")
+        arg_color = "Black" if color == othello.Color.BLACK else "White"
 
     global botProcess
-    botProcess = subprocess.Popen([os.path.join(os.getcwd(), args.bot), color.value],
+    botProcess = subprocess.Popen([os.path.join(os.getcwd(), args.bot), arg_color],
                                   stdout=subprocess.PIPE,
                                   stdin=subprocess.PIPE,
                                   stderr=None,
