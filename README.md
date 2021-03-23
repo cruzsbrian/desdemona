@@ -29,6 +29,8 @@ Then `desdemona-player` will prompt the bot for each move with the message: `[ro
 
 The bot should respond with `[row] [col]` or `pass` specifying it's move, also ending in newline.
 
+If the bot is playing black, it will be prompted with `-1 -1 [ms_remaining]` when the match starts. If playing white, it will be prompted after black's move.
+
 ## Running a local server
 Running `desdemona-server` starts the server and prints a url.
 If `desdemona-player` sees a local server, it will automatically connect to it before trying the default server.
